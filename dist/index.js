@@ -241,6 +241,7 @@ var ConnectWallet = /** @class */ (function () {
             }
         };
         return new Promise(function (resolve, reject) {
+            debugger;
             if (_this.currentWeb3() && !_this.connector) {
                 var _a = _this.currentWeb3().currentProvider, address = _a.address, accounts = _a.accounts;
                 resolve({ address: address || accounts[0] });

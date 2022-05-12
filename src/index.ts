@@ -207,6 +207,7 @@ export class ConnectWallet {
     };
 
     return new Promise((resolve, reject) => {
+      debugger;
       if (this.currentWeb3() && !this.connector) {
         const { address, accounts } = this.currentWeb3().currentProvider as any;
         resolve({ address: address || accounts[0] });
