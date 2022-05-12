@@ -122,6 +122,7 @@ var MetamaskConnect = /** @class */ (function (_super) {
                         return [4 /*yield*/, this.getChainId()];
                     case 1:
                         currentChain = _a.sent();
+                        console.log(this.chainID);
                         if (!(this.chainID !== parseInt(currentChain))) return [3 /*break*/, 9];
                         _a.label = 2;
                     case 2:
