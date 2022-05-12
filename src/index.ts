@@ -207,7 +207,6 @@ export class ConnectWallet {
     };
 
     return new Promise((resolve, reject) => {
-      debugger;
       if (this.currentWeb3() && !this.connector) {
         const { address, accounts } = this.currentWeb3().currentProvider as any;
         resolve({ address: address || accounts[0] });
@@ -217,6 +216,7 @@ export class ConnectWallet {
 
         this.connector.getAccounts().then(
           (connectInfo: IConnect) => {
+            console.log(connectInfo);
             if (connectInfo.network.chainID !== chainID) {
               error.message.text = `Please set network: ${
                 chainsMap[chainIDMap[chainID]].name
