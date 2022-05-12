@@ -135,7 +135,8 @@ var MetamaskConnect = /** @class */ (function (_super) {
                         return [2 /*return*/, true];
                     case 4:
                         err_1 = _a.sent();
-                        if (!(err_1.code === -32063)) return [3 /*break*/, 8];
+                        console.error(err_1);
+                        if (!(err_1.code === -32603)) return [3 /*break*/, 8];
                         if (!this.chainName ||
                             !this.nativeCurrency ||
                             !this.rpc ||
