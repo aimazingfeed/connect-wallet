@@ -19,7 +19,9 @@ exports.parameters = {
         43113: '0xa869',
         43114: '0xa86a',
         42220: '0xa4ec',
-        44787: '0xaef3'
+        44787: '0xaef3',
+        250: '0xfa',
+        4002: '0xfa2'
     },
     chainsMap: {
         '0x1': {
@@ -89,6 +91,14 @@ exports.parameters = {
         '0xaef3': {
             name: 'celo-testnet',
             chainID: 44787
+        },
+        '0xfa': {
+            name: 'fantom-opera',
+            chainID: 250
+        },
+        '0xfa2': {
+            name: 'fantom-testnet',
+            chainID: 4002
         }
     }
 };
