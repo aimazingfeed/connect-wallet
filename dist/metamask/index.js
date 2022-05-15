@@ -118,14 +118,13 @@ var MetamaskConnect = /** @class */ (function (_super) {
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        console.log('HERE');
+                        console.log('CALL checkNet');
                         _a.label = 1;
                     case 1:
                         _a.trys.push([1, 11, , 12]);
                         return [4 /*yield*/, this.getChainId()];
                     case 2:
                         currentChain = _a.sent();
-                        console.log(this.chainID);
                         if (!(this.chainID !== parseInt(currentChain))) return [3 /*break*/, 10];
                         _a.label = 3;
                     case 3:
@@ -139,8 +138,7 @@ var MetamaskConnect = /** @class */ (function (_super) {
                         return [2 /*return*/, true];
                     case 5:
                         err_1 = _a.sent();
-                        console.error(err_1);
-                        if (!(err_1.code === -32603)) return [3 /*break*/, 9];
+                        if (!(err_1.code === 4902)) return [3 /*break*/, 9];
                         if (!this.chainName ||
                             !this.nativeCurrency ||
                             !this.rpc ||
