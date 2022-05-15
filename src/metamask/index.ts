@@ -77,10 +77,9 @@ export class MetamaskConnect extends AbstractConnector {
   }
 
   private async checkNet(): Promise<any> {
-    console.log('HERE');
+    console.log('CALL checkNet')
     try {
       const currentChain = await this.getChainId();
-      console.log(this.chainID);
 
       if (this.chainID !== parseInt(currentChain)) {
         try {
@@ -90,8 +89,7 @@ export class MetamaskConnect extends AbstractConnector {
           });
           return true;
         } catch (err: any) {
-          console.error(err);
-          if (err.code === -32603) {
+          if (err.code === 4902) {
             if (
               !this.chainName ||
               !this.nativeCurrency ||
