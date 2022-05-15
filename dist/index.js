@@ -50,9 +50,9 @@ var helpers_1 = require("./helpers");
 var ConnectWallet = /** @class */ (function () {
     /**
      * Connect provider to web3 and get access to web3 methods, account address and transaction in blockchain.
-     * Supported MetaMask and WalletConnect providers.
+     * Supported MetaMask, WalletConnect, Kardiachain and CoinBase providers.
      */
-    function ConnectWallet() {
+    function ConnectWallet(initProvider) {
         var _this = this;
         this.availableProviders = [
             'MetaMask',
@@ -111,6 +111,9 @@ var ConnectWallet = /** @class */ (function () {
         this.signMsg = function (userAddr, msg) {
             return _this.Web3.eth.personal.sign(msg, userAddr, '');
         };
+        if (initProvider) {
+            this.Web3 = new web3_1["default"](initProvider);
+        }
     }
     /**
      * Create new wallet provider with network and settings valuse by passing it in function arguments.
@@ -124,12 +127,14 @@ var ConnectWallet = /** @class */ (function () {
      */
     ConnectWallet.prototype.connect = function (provider, network, settings) {
         return __awaiter(this, void 0, void 0, function () {
-            var connectPromises;
             var _this = this;
             return __generator(this, function (_a) {
                 if (!this.availableProviders.includes(provider.name)) {
                     return [2 /*return*/, {
                             code: 2,
+                            type: 'error',
+                            connected: false,
+                            provider: provider,
                             message: {
                                 title: 'Error',
                                 subtitle: 'Provider Error',
@@ -140,22 +145,18 @@ var ConnectWallet = /** @class */ (function () {
                 this.network = network;
                 this.settings = settings ? settings : { providerType: false };
                 this.connector = this.chooseProvider(provider.name);
-                connectPromises = [
-                    this.connector
+                return [2 /*return*/, this.connector
                         .connect(provider)
                         .then(function (connect) {
                         return _this.applySettings(connect);
+                    })
+                        .then(function (connect) {
+                        if (connect.connected) {
+                            _this.initWeb3(connect.provider === 'Web3' ? web3_1["default"].givenProvider : connect.provider);
+                        }
+                        return connect;
                     })["catch"](function (error) {
                         return _this.applySettings(error);
-                    }),
-                ];
-                return [2 /*return*/, Promise.all(connectPromises).then(function (connect) {
-                        if (connect[0].connected) {
-                            _this.initWeb3(connect[0].provider === 'Web3'
-                                ? web3_1["default"].givenProvider
-                                : connect[0].provider);
-                        }
-                        return connect[0].connected;
                     })];
             });
         });

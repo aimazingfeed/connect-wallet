@@ -1,6 +1,7 @@
 import Web3 from 'web3';
 import { Observable } from 'rxjs';
 import { Contract } from 'web3-eth-contract';
+import { provider } from 'web3-core';
 
 import { MetamaskConnect } from './metamask';
 import { WalletsConnect } from './wallet-connect';
@@ -48,9 +49,13 @@ export class ConnectWallet {
 
   /**
    * Connect provider to web3 and get access to web3 methods, account address and transaction in blockchain.
-   * Supported MetaMask and WalletConnect providers.
+   * Supported MetaMask, WalletConnect, Kardiachain and CoinBase providers.
    */
-  constructor() {}
+  constructor(initProvider?: provider) {
+    if (initProvider) {
+      this.Web3 = new Web3(initProvider);
+    }
+  }
 
   /**
    * Add custom chains to Connect Wallet, provide an array of chains than return chain list parameters.
@@ -74,43 +79,42 @@ export class ConnectWallet {
     provider: IProvider,
     network: INetwork,
     settings?: ISettings,
-  ): Promise<{} | boolean> {
+  ): Promise<IConnectorMessage> {
     if (!this.availableProviders.includes(provider.name)) {
       return {
         code: 2,
+        type: 'error',
+        connected: false,
+        provider,
         message: {
           title: 'Error',
           subtitle: 'Provider Error',
           text: `Your provider doesn't exists`,
         },
-      } as IMessageProvider;
+      };
     }
 
     this.network = network;
     this.settings = settings ? settings : { providerType: false };
 
     this.connector = this.chooseProvider(provider.name);
-    const connectPromises = [
-      this.connector
-        .connect(provider)
-        .then((connect: IConnectorMessage) => {
-          return this.applySettings(connect);
-        })
-        .catch((error: IConnectorMessage) => {
-          return this.applySettings(error);
-        }),
-    ];
 
-    return Promise.all(connectPromises).then((connect: any) => {
-      if (connect[0].connected) {
-        this.initWeb3(
-          connect[0].provider === 'Web3'
-            ? Web3.givenProvider
-            : connect[0].provider,
-        );
-      }
-      return connect[0].connected;
-    });
+    return this.connector
+      .connect(provider)
+      .then((connect: IConnectorMessage) => {
+        return this.applySettings(connect);
+      })
+      .then((connect: IConnectorMessage) => {
+        if (connect.connected) {
+          this.initWeb3(
+            connect.provider === 'Web3' ? Web3.givenProvider : connect.provider,
+          );
+        }
+        return connect;
+      })
+      .catch((error: IConnectorMessage) => {
+        return this.applySettings(error) as IConnectorMessage;
+      });
   }
 
   /**
@@ -140,7 +144,7 @@ export class ConnectWallet {
    * @param {Any} provider array with provider information.
    * @example connectWallet.initWeb3(provider);
    */
-  public initWeb3(provider: any): void {
+  private initWeb3(provider: any): void {
     if (this.Web3) {
       this.Web3.setProvider(provider);
     } else {
