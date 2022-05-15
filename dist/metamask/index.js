@@ -118,36 +118,33 @@ var MetamaskConnect = /** @class */ (function (_super) {
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        console.log('CALL checkNet');
-                        _a.label = 1;
-                    case 1:
-                        _a.trys.push([1, 11, , 12]);
+                        _a.trys.push([0, 10, , 11]);
                         return [4 /*yield*/, this.getChainId()];
-                    case 2:
+                    case 1:
                         currentChain = _a.sent();
-                        if (!(this.chainID !== parseInt(currentChain))) return [3 /*break*/, 10];
-                        _a.label = 3;
-                    case 3:
-                        _a.trys.push([3, 5, , 10]);
+                        if (!(this.chainID !== parseInt(currentChain))) return [3 /*break*/, 9];
+                        _a.label = 2;
+                    case 2:
+                        _a.trys.push([2, 4, , 9]);
                         return [4 /*yield*/, this.connector.request({
                                 method: 'wallet_switchEthereumChain',
                                 params: [{ chainId: "0x" + this.chainID.toString(16) }]
                             })];
-                    case 4:
+                    case 3:
                         _a.sent();
                         return [2 /*return*/, true];
-                    case 5:
+                    case 4:
                         err_1 = _a.sent();
-                        if (!(err_1.code === 4902)) return [3 /*break*/, 9];
+                        if (!(err_1.code === 4902)) return [3 /*break*/, 8];
                         if (!this.chainName ||
                             !this.nativeCurrency ||
                             !this.rpc ||
                             !this.blockExplorerUrl) {
                             return [2 /*return*/, true];
                         }
-                        _a.label = 6;
-                    case 6:
-                        _a.trys.push([6, 8, , 9]);
+                        _a.label = 5;
+                    case 5:
+                        _a.trys.push([5, 7, , 8]);
                         return [4 /*yield*/, this.connector.request({
                                 method: 'wallet_addEthereumChain',
                                 params: [
@@ -160,18 +157,18 @@ var MetamaskConnect = /** @class */ (function (_super) {
                                     },
                                 ]
                             })];
-                    case 7:
+                    case 6:
                         _a.sent();
                         return [2 /*return*/, true];
-                    case 8:
+                    case 7:
                         err_2 = _a.sent();
                         throw new Error('user reject add chain');
-                    case 9: throw new Error("user reject switch network");
-                    case 10: return [2 /*return*/, true];
-                    case 11:
+                    case 8: throw new Error("user reject switch network");
+                    case 9: return [2 /*return*/, true];
+                    case 10:
                         err_3 = _a.sent();
                         throw new Error(err_3);
-                    case 12: return [2 /*return*/];
+                    case 11: return [2 /*return*/];
                 }
             });
         });

@@ -77,7 +77,6 @@ export class MetamaskConnect extends AbstractConnector {
   }
 
   private async checkNet(): Promise<any> {
-    console.log('CALL checkNet')
     try {
       const currentChain = await this.getChainId();
 

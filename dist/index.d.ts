@@ -1,12 +1,11 @@
 import Web3 from 'web3';
 import { Observable } from 'rxjs';
 import { Contract } from 'web3-eth-contract';
-import { provider } from 'web3-core';
 import { MetamaskConnect } from './metamask';
 import { WalletsConnect } from './wallet-connect';
 import { WalletLinkConnect } from './wallet-link';
 import { KardiaChainConnect } from './kardiachain';
-import { INetwork, IProvider, IAddContract, IConnect, ISettings, IError, IConnectorMessage, ContractWeb3, IChain, INoNameContract, IEvent, IEventError } from './interface';
+import { INetwork, IProvider, IAddContract, IConnect, ISettings, IError, ContractWeb3, IChain, INoNameContract, IEvent, IEventError } from './interface';
 export declare class ConnectWallet {
     private connector;
     private providerName;
@@ -18,9 +17,9 @@ export declare class ConnectWallet {
     private allTxSubscribers;
     /**
      * Connect provider to web3 and get access to web3 methods, account address and transaction in blockchain.
-     * Supported MetaMask, WalletConnect, Kardiachain and CoinBase providers.
+     * Supported MetaMask and WalletConnect providers.
      */
-    constructor(initProvider?: provider);
+    constructor();
     /**
      * Add custom chains to Connect Wallet, provide an array of chains than return chain list parameters.
      *
@@ -38,7 +37,7 @@ export declare class ConnectWallet {
      * @example connectWallet.connect(providerWallet, networkWallet, connectSetting).then((connect) =>
      * {console.log(connect);},(error) => {console.log('connect error', error);});
      */
-    connect(provider: IProvider, network: INetwork, settings?: ISettings): Promise<IConnectorMessage>;
+    connect(provider: IProvider, network: INetwork, settings?: ISettings): Promise<{} | boolean>;
     /**
      * Find and choose available provider for create connection.
      *
@@ -53,7 +52,7 @@ export declare class ConnectWallet {
      * @param {Any} provider array with provider information.
      * @example connectWallet.initWeb3(provider);
      */
-    private initWeb3;
+    initWeb3(provider: any): void;
     /**
      * Geting current connectror
      *
