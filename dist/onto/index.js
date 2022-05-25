@@ -241,39 +241,32 @@ var OntoConnect = /** @class */ (function (_super) {
             }
         };
         return new Promise(function (resolve, reject) {
-            _this.checkNet()
-                .then(function () {
-                _this.ethRequestAccounts()
-                    .then(function (accounts) {
-                    if (accounts[0]) {
-                        _this.connector
-                            .request({
-                            method: 'eth_chainId'
-                        })
-                            .then(function (chainID) {
-                            resolve({
-                                address: accounts[0],
-                                network: helpers_1.parameters.chainsMap[helpers_1.parameters.chainIDMap[+chainID]]
-                            });
+            _this.ethRequestAccounts()
+                .then(function (accounts) {
+                if (accounts[0]) {
+                    _this.connector
+                        .request({
+                        method: 'eth_chainId'
+                    })
+                        .then(function (chainID) {
+                        resolve({
+                            address: accounts[0],
+                            network: helpers_1.parameters.chainsMap[helpers_1.parameters.chainIDMap[+chainID]]
                         });
-                    }
-                    else {
-                        reject(error);
-                    }
-                })["catch"](function () {
-                    reject({
-                        code: 3,
-                        message: {
-                            title: 'Error',
-                            subtitle: 'User rejected the request',
-                            message: 'User rejected the connect'
-                        }
                     });
+                }
+                else {
+                    reject(error);
+                }
+            })["catch"](function () {
+                reject({
+                    code: 3,
+                    message: {
+                        title: 'Error',
+                        subtitle: 'User rejected the request',
+                        message: 'User rejected the connect'
+                    }
                 });
-            })["catch"](function (err) {
-                error.code = 4;
-                error.message = err.message;
-                reject(error);
             });
         });
     };
