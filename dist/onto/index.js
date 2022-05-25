@@ -87,7 +87,7 @@ var OntoConnect = /** @class */ (function (_super) {
                 resolve({
                     code: 1,
                     connected: true,
-                    provider: 'Web3',
+                    provider: _this.connector,
                     message: {
                         title: 'Success',
                         subtitle: 'Connect success',

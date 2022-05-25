@@ -47,7 +47,7 @@ export class OntoConnect extends AbstractConnector {
         resolve({
           code: 1,
           connected: true,
-          provider: 'Web3',
+          provider: this.connector,
           message: {
             title: 'Success',
             subtitle: 'Connect success',
