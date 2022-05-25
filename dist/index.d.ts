@@ -6,6 +6,7 @@ import { MetamaskConnect } from './metamask';
 import { WalletsConnect } from './wallet-connect';
 import { WalletLinkConnect } from './wallet-link';
 import { KardiaChainConnect } from './kardiachain';
+import { OntoConnect } from './onto';
 import { INetwork, IProvider, IAddContract, IConnect, ISettings, IError, IConnectorMessage, ContractWeb3, IChain, INoNameContract, IEvent, IEventError } from './interface';
 export declare class ConnectWallet {
     private connector;
@@ -59,7 +60,7 @@ export declare class ConnectWallet {
      *
      * @example connectWallet.getConnector();
      */
-    getConnector(): MetamaskConnect | WalletsConnect | WalletLinkConnect | KardiaChainConnect;
+    getConnector(): MetamaskConnect | OntoConnect | WalletsConnect | WalletLinkConnect | KardiaChainConnect;
     /**
      * Geting current providerName
      *

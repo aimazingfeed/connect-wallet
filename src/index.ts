@@ -7,6 +7,7 @@ import { MetamaskConnect } from './metamask';
 import { WalletsConnect } from './wallet-connect';
 import { WalletLinkConnect } from './wallet-link';
 import { KardiaChainConnect } from './kardiachain';
+import { OntoConnect } from './onto';
 
 import {
   INetwork,
@@ -31,13 +32,15 @@ export class ConnectWallet {
     | MetamaskConnect
     | WalletsConnect
     | WalletLinkConnect
-    | KardiaChainConnect;
+    | KardiaChainConnect
+    | OntoConnect;
   private providerName: string;
   private availableProviders: string[] = [
     'MetaMask',
     'WalletConnect',
     'WalletLink',
     'KardiaChain',
+    'Onto',
   ];
 
   private network: INetwork;
@@ -135,6 +138,8 @@ export class ConnectWallet {
         return new WalletLinkConnect(this.network);
       case 'KardiaChain':
         return new KardiaChainConnect();
+      case 'Onto':
+        return new OntoConnect(this.network);
     }
   }
 
@@ -159,6 +164,7 @@ export class ConnectWallet {
    */
   public getConnector():
     | MetamaskConnect
+    | OntoConnect
     | WalletsConnect
     | WalletLinkConnect
     | KardiaChainConnect {

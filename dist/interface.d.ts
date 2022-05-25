@@ -1,3 +1,4 @@
+import { WalletLinkProvider } from 'walletlink';
 import { Contract } from 'web3-eth-contract';
 import { AbiItem } from 'web3-utils';
 export interface IProvider {
@@ -101,4 +102,9 @@ export interface IChain {
     name: string;
     chainID: number;
     hex: string;
+}
+declare global {
+    interface Window {
+        onto: WalletLinkProvider;
+    }
 }

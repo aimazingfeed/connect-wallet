@@ -46,6 +46,7 @@ var metamask_1 = require("./metamask");
 var wallet_connect_1 = require("./wallet-connect");
 var wallet_link_1 = require("./wallet-link");
 var kardiachain_1 = require("./kardiachain");
+var onto_1 = require("./onto");
 var helpers_1 = require("./helpers");
 var ConnectWallet = /** @class */ (function () {
     /**
@@ -59,6 +60,7 @@ var ConnectWallet = /** @class */ (function () {
             'WalletConnect',
             'WalletLink',
             'KardiaChain',
+            'Onto',
         ];
         this.contracts = {};
         this.allTxSubscribers = [];
@@ -179,6 +181,8 @@ var ConnectWallet = /** @class */ (function () {
                 return new wallet_link_1.WalletLinkConnect(this.network);
             case 'KardiaChain':
                 return new kardiachain_1.KardiaChainConnect();
+            case 'Onto':
+                return new onto_1.OntoConnect(this.network);
         }
     };
     /**
