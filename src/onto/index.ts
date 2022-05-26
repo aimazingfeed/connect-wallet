@@ -1,12 +1,6 @@
 import { Observable } from 'rxjs';
 
-import {
-  IConnectorMessage,
-  INetwork,
-  INativeCurrency,
-  IEvent,
-  IEventError,
-} from '../interface';
+import { IConnectorMessage, INetwork, INativeCurrency, IEvent, IEventError } from '../interface';
 import { parameters, codeMap } from '../helpers';
 import { AbstractConnector } from '../abstract-connector';
 
@@ -19,7 +13,7 @@ export class OntoConnect extends AbstractConnector {
   private blockExplorerUrl: string;
 
   /**
-   * Metamask class to connect browser metamask extention to your application
+   * Onto class to connect browser metamask extention to your application
    * using connect wallet.
    */
   constructor(network: INetwork) {
@@ -29,12 +23,11 @@ export class OntoConnect extends AbstractConnector {
     if (network.chainName) this.chainName = network.chainName;
     if (network.nativeCurrency) this.nativeCurrency = network.nativeCurrency;
     if (network.rpc) this.rpc = network.rpc;
-    if (network.blockExplorerUrl)
-      this.blockExplorerUrl = network.blockExplorerUrl;
+    if (network.blockExplorerUrl) this.blockExplorerUrl = network.blockExplorerUrl;
   }
 
   /**
-   * Connect Metamask browser or mobile extention to application. Create connection with connect
+   * Connect Onto browser or mobile extention to application. Create connection with connect
    * wallet and return provider for Web3.
    *
    * @returns return connect status and connect information with provider for Web3.
@@ -89,12 +82,7 @@ export class OntoConnect extends AbstractConnector {
           return true;
         } catch (err: any) {
           if (err.code === 4902) {
-            if (
-              !this.chainName ||
-              !this.nativeCurrency ||
-              !this.rpc ||
-              !this.blockExplorerUrl
-            ) {
+            if (!this.chainName || !this.nativeCurrency || !this.rpc || !this.blockExplorerUrl) {
               return true;
             }
             try {
@@ -186,34 +174,37 @@ export class OntoConnect extends AbstractConnector {
     };
 
     return new Promise((resolve, reject) => {
+      try {
         this.ethRequestAccounts()
-        .then((accounts) => {
-          if (accounts[0]) {
-            this.connector
-              .request({
-                method: 'eth_chainId',
-              })
-              .then((chainID: string) => {
-                resolve({
-                  address: accounts[0],
-                  network:
-                    parameters.chainsMap[parameters.chainIDMap[+chainID]],
+          .then((accounts) => {
+            if (accounts[0]) {
+              this.connector
+                .request({
+                  method: 'eth_chainId',
+                })
+                .then((chainID: string) => {
+                  resolve({
+                    address: accounts[0],
+                    network: parameters.chainsMap[parameters.chainIDMap[+chainID]],
+                  });
                 });
-              });
-          } else {
-            reject(error);
-          }
-        })
-        .catch(() => {
-          reject({
-            code: 3,
-            message: {
-              title: 'Error',
-              subtitle: 'User rejected the request',
-              message: 'User rejected the connect',
-            },
+            } else {
+              reject(error);
+            }
+          })
+          .catch(() => {
+            reject({
+              code: 3,
+              message: {
+                title: 'Error',
+                subtitle: 'User rejected the request',
+                message: 'User rejected the connect',
+              },
+            });
           });
-        });
+      } catch (error) {
+        throw new Error(error);
+      }
     });
   }
 }

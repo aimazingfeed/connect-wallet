@@ -56,7 +56,7 @@ var abstract_connector_1 = require("../abstract-connector");
 var OntoConnect = /** @class */ (function (_super) {
     __extends(OntoConnect, _super);
     /**
-     * Metamask class to connect browser metamask extention to your application
+     * Onto class to connect browser metamask extention to your application
      * using connect wallet.
      */
     function OntoConnect(network) {
@@ -73,7 +73,7 @@ var OntoConnect = /** @class */ (function (_super) {
         return _this;
     }
     /**
-     * Connect Metamask browser or mobile extention to application. Create connection with connect
+     * Connect Onto browser or mobile extention to application. Create connection with connect
      * wallet and return provider for Web3.
      *
      * @returns return connect status and connect information with provider for Web3.
@@ -136,10 +136,7 @@ var OntoConnect = /** @class */ (function (_super) {
                     case 4:
                         err_1 = _a.sent();
                         if (!(err_1.code === 4902)) return [3 /*break*/, 8];
-                        if (!this.chainName ||
-                            !this.nativeCurrency ||
-                            !this.rpc ||
-                            !this.blockExplorerUrl) {
+                        if (!this.chainName || !this.nativeCurrency || !this.rpc || !this.blockExplorerUrl) {
                             return [2 /*return*/, true];
                         }
                         _a.label = 5;
@@ -241,33 +238,38 @@ var OntoConnect = /** @class */ (function (_super) {
             }
         };
         return new Promise(function (resolve, reject) {
-            _this.ethRequestAccounts()
-                .then(function (accounts) {
-                if (accounts[0]) {
-                    _this.connector
-                        .request({
-                        method: 'eth_chainId'
-                    })
-                        .then(function (chainID) {
-                        resolve({
-                            address: accounts[0],
-                            network: helpers_1.parameters.chainsMap[helpers_1.parameters.chainIDMap[+chainID]]
+            try {
+                _this.ethRequestAccounts()
+                    .then(function (accounts) {
+                    if (accounts[0]) {
+                        _this.connector
+                            .request({
+                            method: 'eth_chainId'
+                        })
+                            .then(function (chainID) {
+                            resolve({
+                                address: accounts[0],
+                                network: helpers_1.parameters.chainsMap[helpers_1.parameters.chainIDMap[+chainID]]
+                            });
                         });
-                    });
-                }
-                else {
-                    reject(error);
-                }
-            })["catch"](function () {
-                reject({
-                    code: 3,
-                    message: {
-                        title: 'Error',
-                        subtitle: 'User rejected the request',
-                        message: 'User rejected the connect'
                     }
+                    else {
+                        reject(error);
+                    }
+                })["catch"](function () {
+                    reject({
+                        code: 3,
+                        message: {
+                            title: 'Error',
+                            subtitle: 'User rejected the request',
+                            message: 'User rejected the connect'
+                        }
+                    });
                 });
-            });
+            }
+            catch (error) {
+                throw new Error(error);
+            }
         });
     };
     return OntoConnect;
