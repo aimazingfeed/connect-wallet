@@ -268,7 +268,9 @@ var OntoConnect = /** @class */ (function (_super) {
                 });
             }
             catch (error) {
-                throw new Error(error);
+                error.code = 4;
+                error.message = error.message;
+                reject(error);
             }
         });
     };

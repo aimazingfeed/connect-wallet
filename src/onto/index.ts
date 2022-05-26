@@ -203,7 +203,9 @@ export class OntoConnect extends AbstractConnector {
             });
           });
       } catch (error) {
-        throw new Error(error);
+        error.code = 4;
+        error.message = error.message;
+        reject(error);
       }
     });
   }
