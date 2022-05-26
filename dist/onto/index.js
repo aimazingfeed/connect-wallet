@@ -238,7 +238,8 @@ var OntoConnect = /** @class */ (function (_super) {
             }
         };
         return new Promise(function (resolve, reject) {
-            try {
+            _this.checkNet()
+                .then(function () {
                 _this.ethRequestAccounts()
                     .then(function (accounts) {
                     if (accounts[0]) {
@@ -266,12 +267,11 @@ var OntoConnect = /** @class */ (function (_super) {
                         }
                     });
                 });
-            }
-            catch (error) {
+            })["catch"](function (err) {
                 error.code = 4;
-                error.message = error.message;
+                error.message = err.message;
                 reject(error);
-            }
+            });
         });
     };
     return OntoConnect;
