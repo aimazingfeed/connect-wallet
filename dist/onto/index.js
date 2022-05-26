@@ -238,39 +238,38 @@ var OntoConnect = /** @class */ (function (_super) {
             }
         };
         return new Promise(function (resolve, reject) {
-            _this.checkNet()
-                .then(function () {
-                _this.ethRequestAccounts()
-                    .then(function (accounts) {
-                    if (accounts[0]) {
-                        _this.connector
-                            .request({
-                            method: 'eth_chainId'
-                        })
-                            .then(function (chainID) {
-                            resolve({
-                                address: accounts[0],
-                                network: helpers_1.parameters.chainsMap[helpers_1.parameters.chainIDMap[+chainID]]
-                            });
-                        });
-                    }
-                    else {
-                        reject(error);
-                    }
-                })["catch"](function () {
-                    reject({
-                        code: 3,
-                        message: {
-                            title: 'Error',
-                            subtitle: 'User rejected the request',
-                            message: 'User rejected the connect'
-                        }
-                    });
+            if (!window.onto)
+                reject({
+                    code: 4,
+                    message: 'User doesn\'t have Onto extension',
+                    type: 'Onto'
                 });
-            })["catch"](function (err) {
-                error.code = 4;
-                error.message = err.message;
-                reject(error);
+            _this.ethRequestAccounts()
+                .then(function (accounts) {
+                if (accounts[0]) {
+                    _this.connector
+                        .request({
+                        method: 'eth_chainId'
+                    })
+                        .then(function (chainID) {
+                        resolve({
+                            address: accounts[0],
+                            network: helpers_1.parameters.chainsMap[helpers_1.parameters.chainIDMap[+chainID]]
+                        });
+                    });
+                }
+                else {
+                    reject(error);
+                }
+            })["catch"](function () {
+                reject({
+                    code: 3,
+                    message: {
+                        title: 'Error',
+                        subtitle: 'User rejected the request',
+                        message: 'User rejected the connect'
+                    }
+                });
             });
         });
     };

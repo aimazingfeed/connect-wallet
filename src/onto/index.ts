@@ -174,40 +174,38 @@ export class OntoConnect extends AbstractConnector {
     };
 
     return new Promise((resolve, reject) => {
-      this.checkNet()
-        .then(() => {
-          this.ethRequestAccounts()
-            .then((accounts) => {
-              if (accounts[0]) {
-                this.connector
-                  .request({
-                    method: 'eth_chainId',
-                  })
-                  .then((chainID: string) => {
-                    resolve({
-                      address: accounts[0],
-                      network: parameters.chainsMap[parameters.chainIDMap[+chainID]],
-                    });
-                  });
-              } else {
-                reject(error);
-              }
-            })
-            .catch(() => {
-              reject({
-                code: 3,
-                message: {
-                  title: 'Error',
-                  subtitle: 'User rejected the request',
-                  message: 'User rejected the connect',
-                },
+      if (!window.onto)
+        reject({
+          code: 4,
+          message: 'User doesn\'t have Onto extension',
+          type: 'Onto',
+        });
+      this.ethRequestAccounts()
+        .then((accounts) => {
+          if (accounts[0]) {
+            this.connector
+              .request({
+                method: 'eth_chainId',
+              })
+              .then((chainID: string) => {
+                resolve({
+                  address: accounts[0],
+                  network: parameters.chainsMap[parameters.chainIDMap[+chainID]],
+                });
               });
-            });
+          } else {
+            reject(error);
+          }
         })
-        .catch((err: any) => {
-          error.code = 4;
-          error.message = err.message;
-          reject(error);
+        .catch(() => {
+          reject({
+            code: 3,
+            message: {
+              title: 'Error',
+              subtitle: 'User rejected the request',
+              message: 'User rejected the connect',
+            },
+          });
         });
     });
   }
