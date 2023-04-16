@@ -183,4 +183,8 @@ export declare class ConnectWallet {
      * @example connectWallet.eventSubscriber().subscribe((event:IEvent) => console.log('event from subscribe', event), (err:IEventError) => console.log('event error', err));
      */
     eventSubscriber(): Observable<IEvent | IEventError>;
+
+    setWeb3(web3: Web3) {
+        this.initWeb3(web3);
+    }
 }

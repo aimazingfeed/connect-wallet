@@ -384,6 +384,10 @@ var ConnectWallet = /** @class */ (function () {
             _this.connector.eventSubscriber().subscribe(function (event) { return observer.next(event); }, function (error) { return observer.error(error); });
         });
     };
+    ConnectWallet.prototype.setWeb3 = function (web3) {
+        var _this = this;
+        _this.initWeb3(web3)
+    }
     return ConnectWallet;
 }());
 exports.ConnectWallet = ConnectWallet;
