@@ -409,4 +409,8 @@ export class ConnectWallet {
       );
     });
   }
+
+  public setWeb3(web3: Web3) {
+    this.initWeb3(web3);
+  }
 }
